@@ -6,9 +6,14 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.Buffer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,16 +21,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class NotePad extends JFrame implements ActionListener {
-	
+public class NotePad implements ActionListener {
+	JFrame f = new JFrame();
+	JTextArea area;
 	NotePad(){
-		setExtendedState(JFrame.MAXIMIZED_BOTH); // responsive page for different screens 
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH); // responsive page for different screens 
 		
-		setTitle("Notepad");
+		f.setTitle("Notepad");
 		ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/notepad.png"));
 		Image icon = imageIcon.getImage();
-		setIconImage(icon);
+		f.setIconImage(icon);
 		
 		JMenuBar menubar = new JMenuBar();  // creating menu bar
 		menubar.setBackground(Color.white);
@@ -91,7 +98,7 @@ public class NotePad extends JFrame implements ActionListener {
 		help.addActionListener(this);
 		helpMenu.add(help);
 		menubar.add(helpMenu);
-		 JTextArea area = new JTextArea();
+		 area = new JTextArea();
 		 area.setFont(new Font("SAN_SERIF",Font.PLAIN,18));
 		 area.setLineWrap(true); // Go to next line when achieve max length of the screen
 		 area.setWrapStyleWord(true); // Move to next Line when Word length is grater than space remaining 
@@ -99,10 +106,10 @@ public class NotePad extends JFrame implements ActionListener {
 		 
 		 JScrollPane pane = new JScrollPane(area);
 		 pane.setBorder(BorderFactory.createEmptyBorder());
-		 add(pane);
+		 f.add(pane);
 		 
-		setJMenuBar(menubar);   //adding Menu-bar to the JFrame
-		setVisible(true); // make shore to make it last statement
+		f.setJMenuBar(menubar);   //adding Menu-bar to the JFrame
+		f.setVisible(true); // make shore to make it last statement
 	}
 
 	public static void main(String[] args) {
@@ -114,6 +121,34 @@ public class NotePad extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(e.getActionCommand().equals("New")) {
+			area.setText("");
+			f.setTitle("Untittled - Notepad");
+		}else if(e.getActionCommand().equals("Open")) {
+			JFileChooser choose = new JFileChooser();
+			
+			choose.setAcceptAllFileFilterUsed(false);
+			
+			FileNameExtensionFilter restrict = new FileNameExtensionFilter("Choose only .txt files","txt"); // Restrict the files to be open
+			
+			choose.addChoosableFileFilter(restrict); // added the restricted files
+			int action = choose.showOpenDialog(f);
+			
+			if(action != JFileChooser.APPROVE_OPTION) {   // Is file choose or not 
+				return;
+			}else {
+				File file = choose.getSelectedFile();  // going to add file to notepad
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					f.setTitle(file.getName()+" Notepad ");
+					area.read(reader, null);
+				}catch(Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			
+			
+		}
 		
 	}
 
