@@ -7,8 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.nio.Buffer;
 
 import javax.swing.BorderFactory;
@@ -24,6 +26,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class NotePad implements ActionListener {
+	String text;
 	JFrame f = new JFrame();
 	JTextArea area;
 	NotePad(){
@@ -147,7 +150,52 @@ public class NotePad implements ActionListener {
 				}
 			}
 			
+		}else if(e.getActionCommand().equals("Save")) {
 			
+			JFileChooser saveAs = new JFileChooser();
+			
+			saveAs.setApproveButtonText("Save");
+			saveAs.setAcceptAllFileFilterUsed(false);
+			FileNameExtensionFilter restrict = new FileNameExtensionFilter("Text Document ","txt"); // Restrict the files to be open
+			
+			saveAs.addChoosableFileFilter(restrict); // added the restricted files
+			int action = saveAs.showOpenDialog(f);
+			if(action != JFileChooser.APPROVE_OPTION) {
+				return;
+			}else {
+				File save = (saveAs.getSelectedFile());
+				
+				try {
+					BufferedWriter writer = new BufferedWriter(new FileWriter(save));
+					f.setTitle(save.getName()+" Notepad ");
+					area.write(writer);
+				}catch(Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}else if(e.getActionCommand().equals("Print")) {
+			try {
+				area.print();
+			}catch(Exception e3) {
+				e3.printStackTrace();
+			}
+		}else if(e.getActionCommand().equals("Exit")) {
+			System.exit(0);
+		}
+		
+		// Edit Menu-Item
+		
+		else if(e.getActionCommand().equals("Cut")) {
+			area.replaceRange(text, area.getSelectionStart(), area.getSelectionEnd());
+		}
+		else if(e.getActionCommand().equals("Copy")) {
+			text = area.getSelectedText();
+		}
+		else if(e.getActionCommand().equals("Paste")) {
+			area.insert(text, area.getCaretPosition());
+		}
+		else if(e.getActionCommand().equals("Select All")) {
+			area.selectAll();
 		}
 		
 	}
