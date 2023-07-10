@@ -96,7 +96,7 @@ public class NotePad implements ActionListener {
 		JMenu helpMenu = new JMenu("Help");  // creating Menu
 		helpMenu.setFont(new Font("Arial",Font.PLAIN,14));
 		
-		JMenuItem help = new JMenuItem("Help");
+		JMenuItem help = new JMenuItem("About");
 		help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,ActionEvent.CTRL_MASK));  // Press Ctrl+X to cut the text
 		help.addActionListener(this);
 		helpMenu.add(help);
@@ -196,6 +196,9 @@ public class NotePad implements ActionListener {
 		}
 		else if(e.getActionCommand().equals("Select All")) {
 			area.selectAll();
+		}
+		else if(e.getActionCommand().equals("About")) {
+			
 		}
 		
 	}
