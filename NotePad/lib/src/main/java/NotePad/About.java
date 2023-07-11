@@ -19,6 +19,11 @@ public class About extends JFrame{
 		label.setBounds(70, 40, 400, 60);
 		add(label);
 		
+		Image l4 = icon1.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT);
+		ImageIcon note = new ImageIcon(l4);
+		JLabel label2 = new JLabel(note);
+		label2.setBounds(50,180,70,70);
+		add(label2);
 		
 		Image img = icon1.getImage();
 		setIconImage(img);
