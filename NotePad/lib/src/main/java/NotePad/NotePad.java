@@ -198,7 +198,7 @@ public class NotePad implements ActionListener {
 			area.selectAll();
 		}
 		else if(e.getActionCommand().equals("About")) {
-			
+			new About().setVisible(true);
 		}
 		
 	}
