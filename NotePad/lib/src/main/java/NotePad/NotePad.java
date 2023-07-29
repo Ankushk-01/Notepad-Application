@@ -11,8 +11,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.Buffer;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -26,6 +24,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class NotePad implements ActionListener {
+	int size = 18;
 	String text;
 	JFrame f = new JFrame();
 	JTextArea area;
@@ -93,6 +92,25 @@ public class NotePad implements ActionListener {
 		edit.add(selectAll);
 		menubar.add(edit);  // adding menu to menu-bar
 		
+		JMenu viewMenu = new JMenu("View");  // creating View
+		viewMenu.setFont(new Font("Arial",Font.PLAIN,14));
+
+		JMenu zoomMenu = new JMenu("Zoom");  // creating Zoom sub-menu
+		zoomMenu.setFont(new Font("Arial",Font.PLAIN,14));
+		JMenuItem zoomIn = new JMenuItem("Zoom In");
+		zoomIn.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionEvent.CTRL_MASK));
+		zoomIn.addActionListener(this);
+		zoomMenu.add(zoomIn);
+		JMenuItem zoomOut = new JMenuItem("Zoom Out");
+		zoomOut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
+		zoomOut.addActionListener(this);
+		zoomMenu.add(zoomOut);
+		JMenuItem zoomDefault = new JMenuItem("Zoom Default");
+		zoomDefault.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionEvent.CTRL_MASK));
+		zoomDefault.addActionListener(this);
+		zoomMenu.add(zoomDefault);
+		viewMenu.add(zoomMenu);
+		menubar.add(viewMenu);
 		JMenu helpMenu = new JMenu("Help");  // creating Menu
 		helpMenu.setFont(new Font("Arial",Font.PLAIN,14));
 		
@@ -102,7 +120,7 @@ public class NotePad implements ActionListener {
 		helpMenu.add(help);
 		menubar.add(helpMenu);
 		 area = new JTextArea();
-		 area.setFont(new Font("SAN_SERIF",Font.PLAIN,18));
+		 area.setFont(new Font("SAN_SERIF",Font.PLAIN,size));
 		 area.setLineWrap(true); // Go to next line when achieve max length of the screen
 		 area.setWrapStyleWord(true); // Move to next Line when Word length is grater than space remaining 
 //		 add(area);
@@ -116,7 +134,7 @@ public class NotePad implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		NotePad notepad = new NotePad();
+		new NotePad();
 //		new NotePad();  // it is called enormous Object
 
 	}
@@ -199,6 +217,24 @@ public class NotePad implements ActionListener {
 		}
 		else if(e.getActionCommand().equals("About")) {
 			new About().setVisible(true);
+		}
+
+		else if(e.getActionCommand().equals("Zoom In")){
+			int zoomIn = size+2;
+			area.setFont(new Font("SAN_SERIF",Font.PLAIN,zoomIn));
+			size = zoomIn;
+		}
+		else if(e.getActionCommand().equals("Zoom Out")){
+			if(size >15){
+				int zoomOut = size-2;
+				area.setFont(new Font("SAN_SERIF",Font.PLAIN,zoomOut));
+				size = zoomOut;
+			}
+		}
+		else if(e.getActionCommand().equals("Zoom Default")){
+			int deafult = 18;
+			area.setFont(new Font("SAN_SERIF",Font.PLAIN,deafult));
+			size = deafult;
 		}
 		
 	}
